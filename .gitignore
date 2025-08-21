@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+
+backend/data/*.csv
+backend/model/*.pkl
+
+node_modules/
+build/
