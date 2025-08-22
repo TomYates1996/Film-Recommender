@@ -8,6 +8,8 @@ Open Command Prompt in the project folder and run the following:
 
     pip install -r backend/requirements.txt
     
+Add configuration
+Set script path to backend/app.py and interpreter to the one for this app, everything else should be fine then click okay.
 
 ## Downloading the Data
 
@@ -15,18 +17,21 @@ Open Command Prompt in the project folder and run the following:
     Move to or ensure kaggle.json is in ~/.kaggle/.
     Run the following in your terminal ->>python backend/download_data.py
 
-## Creating the Model and Running the App
+## Training the model
     
   1) cd backend
      
   2) Train the model:
         python backend/train_model.py
-  
-  3) Run the Flask API backend:
-        python backend/app.py
 
-  4) Run the React frontend:
-        cd frontend
-        npm start
+## Running the app
+  
+  4) Run the Flask API backend:
+        python backend/app.py
+  5) press the little play button to run the backend api.
+
+  6) cd to the frontend folder
+  7) npm install
+  8) npm start
      
   Open your browser at http://localhost:3000 to access the app.
