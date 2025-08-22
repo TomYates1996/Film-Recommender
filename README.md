@@ -16,14 +16,16 @@ Open Command Prompt in the project folder and run the following:
     Run the following in your terminal ->>python backend/download_data.py
 
 ## Creating the Model and Running the App
-  1) Train the model:
-        python backend/train_model.py
-  1) Run the Flask API backend:
-        python backend/app.py
+    
+  1) cd backend
      
-  This will create and train the model.
+  2) Train the model:
+        python backend/train_model.py
+  
+  3) Run the Flask API backend:
+        python backend/app.py
 
-  3) Run the React frontend:
+  4) Run the React frontend:
         cd frontend
         npm start
      
