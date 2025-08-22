@@ -1,0 +1,4 @@
+pandas
+Flask
+Flask-Cors
+Kaggle
