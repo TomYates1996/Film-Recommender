@@ -1,8 +1,14 @@
+## Setup the environment
+
+Open Command Prompt in the project folder and run the following:
+    pip install kaggle
+    pip install pandas
+
 ## Downloading the Data
 
     Create a Kaggle account and get your API token (kaggle.json). https://www.kaggle.com/
     Move to or ensure kaggle.json is in ~/.kaggle/.
-    Run the following in your terminal ->>python download_data.py
+    Run the following in your terminal ->>python backend/download_data.py
 
 ## Creating the Model and Running the App
   1) Run the Flask API backend:
