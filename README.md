@@ -1,8 +1,13 @@
 ## Setup the environment
 
 Open Command Prompt in the project folder and run the following:
-    pip install kaggle
-    pip install pandas
+
+    python -m venv venv
+
+    .\venv\Scripts\activate
+
+    pip install -r backend/requirements.txt
+    
 
 ## Downloading the Data
 
@@ -11,10 +16,12 @@ Open Command Prompt in the project folder and run the following:
     Run the following in your terminal ->>python backend/download_data.py
 
 ## Creating the Model and Running the App
+  1) Train the model:
+        python backend/train_model.py
   1) Run the Flask API backend:
         python backend/app.py
      
-  This will create and train the model if it hasn’t been created already.
+  This will create and train the model.
 
   3) Run the React frontend:
         cd frontend
