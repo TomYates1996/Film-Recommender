@@ -1,3 +1,10 @@
+## Screenshots for people who don't want to run the app themselves
+
+https://github.com/TomYates1996/Film-Recommender/blob/main/assets/images/initial.png
+https://github.com/TomYates1996/Film-Recommender/blob/main/assets/images/typing.png
+https://github.com/TomYates1996/Film-Recommender/blob/main/assets/images/searching.png
+https://github.com/TomYates1996/Film-Recommender/blob/main/assets/images/results.png
+
 ## Setup the environment
 
 Open Command Prompt in the project folder and run the following:
