@@ -94,30 +94,34 @@ function FilmSearch() {
                 setNoResults(false);
             }
 
-            setRecommendations(recs);
-
             const formatTitleForTMDb = (title) => {
                 let formatted = title.replace(/\(.*?\)(?=\s*$)/, "").trim();
                 formatted = formatted.replace(/['"]/g, "");
                 return formatted;
             };
 
-            const posterPromises = recs.map(async (title) => {
+            const posterAndRatingPromises = recs.map(async (title) => {
                 const queryTitle = formatTitleForTMDb(title);
                 const tmdbRes = await fetch(
                     `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(queryTitle)}`
                 );
                 const tmdbData = await tmdbRes.json();
                 if (tmdbData.results && tmdbData.results[0]) {
-                    return [title, `https://image.tmdb.org/t/p/w200${tmdbData.results[0].poster_path}`];
+                    const poster = tmdbData.results[0].poster_path
+                        ? `https://image.tmdb.org/t/p/w200${tmdbData.results[0].poster_path}`
+                        : null;
+                    const rating = tmdbData.results[0].vote_average ?? null;
+                    return [title, { poster, rating }];
                 } else {
-                    return [title, null];
+                    return [title, { poster: null, rating: null }];
                 }
             });
 
-            const posterArray = await Promise.all(posterPromises);
-            const posterObj = Object.fromEntries(posterArray);
-            setPosters(posterObj);
+            const posterAndRatingArray = await Promise.all(posterAndRatingPromises);
+            const posterAndRatingObj = Object.fromEntries(posterAndRatingArray);
+            setPosters(posterAndRatingObj);
+
+            setRecommendations(recs);
 
         } catch (error) {
             console.error("Error fetching recommendations:", error);
@@ -174,8 +178,11 @@ function FilmSearch() {
                     <ul className="recommendations-list">
                         {recommendations.map((title, index) => (
                             <li className="recommendation-item" key={index}>
-                                {posters[title] && <img src={posters[title]} alt={title} />}
+                                {posters[title]?.poster && <img src={posters[title].poster} alt={title} />}
                                 <p className="recommendation-item-title">{title}</p>
+                                {posters[title]?.rating !== null && (
+                                    <p className="recommendation-item-rating">Rating: {posters[title].rating.toFixed(1)}</p>
+                                )}
                             </li>
                         ))}
                     </ul>
