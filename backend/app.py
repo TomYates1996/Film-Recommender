@@ -1,40 +1,16 @@
 import pandas as pd
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-user_movie_matrix = pd.read_pickle("model/user_film_matrix.pkl")
-film_stats = pd.read_pickle("model/film_stats.pkl")
-
-def recommend_films(film_title, top_n=10):
-    if film_title not in user_movie_matrix:
-        return []
-
-    film_title = film_title.strip()
-    if film_title not in user_movie_matrix.columns:
-        from difflib import get_close_matches
-        matches = get_close_matches(film_title, user_movie_matrix.columns, n=1, cutoff=0.6)
-        if matches:
-            film_title = matches[0]
-        else:
-            return []
-
-    film_ratings = user_movie_matrix[film_title]
-    similar = user_movie_matrix.corrwith(film_ratings)
-    similar = similar.dropna()
-
-    df = pd.DataFrame(similar, columns=['correlation'])
-    df = df.join(film_stats['num_ratings'])
-
-    df = df[df['num_ratings'] >= 200].sort_values('correlation', ascending=False)
-
-    df = df.drop(film_title, errors='ignore')
-
-    return df.head(top_n).index.tolist()
-
-
-
 app = Flask(__name__)
 CORS(app)
+
+model_dir = "model"
+
+user_movie_matrix = pd.read_pickle(os.path.join(model_dir, "user_film_matrix.pkl"))
+film_stats = pd.read_pickle(os.path.join(model_dir, "film_stats.pkl"))
+cosine_sim = pd.read_pickle(os.path.join(model_dir, "cosine_sim.pkl"))
 
 @app.route("/recommend", methods=["GET"])
 def recommend():
@@ -42,8 +18,16 @@ def recommend():
     if not film:
         return jsonify({"error": "No film provided"}), 400
 
-    recommendations = recommend_films(film)
-    return jsonify({"recommendations": recommendations})
+    if film not in cosine_sim.index:
+        return jsonify({"recommendations": []})
+
+    similar_scores = cosine_sim[film].sort_values(ascending=False)
+
+    similar_scores = similar_scores.drop(film, errors="ignore")
+
+    top_recs = similar_scores.head(10).index.tolist()
+
+    return jsonify({"recommendations": top_recs})
 
 if __name__ == "__main__":
     app.run(debug=True)
